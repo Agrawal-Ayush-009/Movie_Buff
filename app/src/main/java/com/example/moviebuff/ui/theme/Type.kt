@@ -24,25 +24,21 @@ val fontFamily = FontFamily(
         googleFont = fontName,
         fontProvider = provider,
         weight = FontWeight.SemiBold,
-        style = FontStyle.Italic
     ),
     Font(
         googleFont = fontName,
         fontProvider = provider,
         weight = FontWeight.Medium,
-        style = FontStyle.Italic
     ),
     Font(
         googleFont = fontName,
         fontProvider = provider,
         weight = FontWeight.Normal,
-        style = FontStyle.Italic
     ),
     Font(
         googleFont = fontName,
         fontProvider = provider,
         weight = FontWeight.Bold,
-        style = FontStyle.Italic
     ),
 )
 

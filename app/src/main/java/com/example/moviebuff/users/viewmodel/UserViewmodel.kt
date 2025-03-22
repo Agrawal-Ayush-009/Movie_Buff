@@ -11,7 +11,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.moviebuff.users.SyncWorker
+import com.example.moviebuff.users.woker.SyncWorker
 import com.example.moviebuff.users.respository.UserRepository
 import com.example.moviebuff.users.roomDB.UserEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,8 +30,10 @@ class UserViewmodel @Inject constructor(
         viewModelScope.launch{
             val isOnline = isOnline(app)
             repository.addUser(userEntity, isOnline)
+            if(isOnline){
+                repository.syncOfflineUsers()
+            }
             scheduleSyncWork(app)
-
         }
     }
 
