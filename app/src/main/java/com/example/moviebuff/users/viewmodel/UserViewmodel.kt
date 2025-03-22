@@ -26,13 +26,14 @@ class UserViewmodel @Inject constructor(
     var userList = repository.getUsers().flow.cachedIn(viewModelScope)
     val addUserState get() = repository.addUserState
 
+    init {
+        scheduleSyncWork(app)
+    }
+
     fun addUser(userEntity: UserEntity) {
         viewModelScope.launch{
             val isOnline = isOnline(app)
             repository.addUser(userEntity, isOnline)
-            if(isOnline){
-                repository.syncOfflineUsers()
-            }
             scheduleSyncWork(app)
         }
     }

@@ -1,12 +1,10 @@
 package com.example.moviebuff.graph
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.moviebuff.SharedViewModel
+import com.example.moviebuff.utils.SharedViewModel
 import com.example.moviebuff.movies.MovieDetailsScreen
 import com.example.moviebuff.movies.MoviesListScreen
 import com.example.moviebuff.users.AddUserScreen

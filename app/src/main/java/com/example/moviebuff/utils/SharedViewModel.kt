@@ -1,4 +1,4 @@
-package com.example.moviebuff
+package com.example.moviebuff.utils
 
 import androidx.lifecycle.ViewModel
 import com.example.moviebuff.models.movie_models.Movie
