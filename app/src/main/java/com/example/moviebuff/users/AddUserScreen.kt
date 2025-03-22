@@ -1,8 +1,10 @@
 package com.example.moviebuff.users
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -37,12 +41,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviebuff.R
+import com.example.moviebuff.SharedViewModel
 import com.example.moviebuff.ui.theme.fontFamily
+import com.example.moviebuff.users.roomDB.UserEntity
+import com.example.moviebuff.users.viewmodel.UserViewmodel
+import com.example.moviebuff.utils.NetworkResult
 
 @Composable
-@Preview
-fun AddUserScreen() {
+fun AddUserScreen(
+    backOnclick: () -> Unit,
+    viewModel: UserViewmodel = hiltViewModel()
+) {
+    val context = LocalContext.current
     var name by remember {
         mutableStateOf("")
     }
@@ -50,6 +62,7 @@ fun AddUserScreen() {
     var job by remember {
         mutableStateOf("")
     }
+    val addUserState = viewModel.addUserState.collectAsState()
     Column(
         modifier = Modifier.fillMaxSize()
             .background(Color.White)
@@ -62,7 +75,11 @@ fun AddUserScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable {
+                        backOnclick()
+                    },
                 painter = painterResource(R.drawable.arrow_ios_back_svgrepo_com),
                 contentDescription = "backArrow"
             )
@@ -182,12 +199,45 @@ fun AddUserScreen() {
                     singleLine = true
                 )
             }
-
+            when(addUserState.value){
+                is NetworkResult.Error -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        ErrorItem(addUserState.value.msg.toString())
+                    }
+                }
+                is NetworkResult.Loading -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        LoadingIndicator("Adding User...")
+                    }
+                }
+                is NetworkResult.Success -> {
+                    Toast.makeText(context, "User Added Successfully", Toast.LENGTH_SHORT).show()
+                    backOnclick()
+                    viewModel.removeAddUserState()
+                }
+                else -> {}
+            }
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 32.dp),
                 onClick = {
+                    viewModel.addUser(
+                        UserEntity(
+                            name = name,
+                            job = job
+                        )
+                    )
                 },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(

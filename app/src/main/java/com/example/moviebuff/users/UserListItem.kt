@@ -27,24 +27,29 @@ import com.example.moviebuff.R
 import com.example.moviebuff.ui.theme.fontFamily
 
 @Composable
-@Preview
-fun UserListItem() {
+fun UserListItem(
+    name: String,
+    imgUrl: String,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
+            .clickable {
+                onClick()
+            }
             .padding(horizontal = 10.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
         AsyncImage(
             modifier = Modifier
-                .clickable {}
                 .size(64.dp)
                 .clip(RoundedCornerShape(100.dp)),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(
-                    ""
+                    imgUrl
                 )
                 .crossfade(true)
                 .build(),
@@ -56,7 +61,7 @@ fun UserListItem() {
         )
         Text(
             modifier = Modifier.padding(start = 16.dp),
-            text = "Users",
+            text = name,
             fontSize = 16.sp,
             color = Color.Black,
             fontFamily = fontFamily,

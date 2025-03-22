@@ -30,12 +30,19 @@ import com.example.moviebuff.R
 import com.example.moviebuff.ui.theme.fontFamily
 
 @Composable
-@Preview
-fun MovieListItem() {
+fun MovieListItem(
+    title: String,
+    posterUrl: String,
+    releaseDate: String,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
+            .clickable {
+                onClick()
+            }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -46,7 +53,7 @@ fun MovieListItem() {
                 .height(150.dp),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(
-                    ""
+                    "https://image.tmdb.org/t/p/w185/$posterUrl"
                 )
                 .crossfade(true)
                 .build(),
@@ -70,7 +77,7 @@ fun MovieListItem() {
             )
             Text(
                 modifier = Modifier.padding(start = 16.dp),
-                text = "Avengers - End Game",
+                text = title,
                 fontSize = 16.sp,
                 color = Color.Black,
                 fontFamily = fontFamily,
@@ -86,7 +93,7 @@ fun MovieListItem() {
             )
             Text(
                 modifier = Modifier.padding(start = 16.dp),
-                text = "26/04/2019",
+                text = releaseDate,
                 fontSize = 16.sp,
                 color = Color.Black,
                 fontFamily = fontFamily,

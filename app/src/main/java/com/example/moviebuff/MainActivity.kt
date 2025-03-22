@@ -11,16 +11,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.moviebuff.graph.RootNavigationGraph
 import com.example.moviebuff.movies.MoviesListScreen
 import com.example.moviebuff.ui.theme.MovieBuffTheme
 import com.example.moviebuff.users.AddUserScreen
+import com.example.moviebuff.users.UserListScreen
+import com.example.moviebuff.users.viewmodel.UserViewmodel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MovieBuffTheme {
-                MoviesListScreen()
+                RootNavigationGraph(navHostController = rememberNavController())
             }
         }
     }
