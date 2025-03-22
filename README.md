@@ -27,6 +27,9 @@
 - Coil
 - RoomDatabase
 
+## Download APK
+https://drive.google.com/file/d/1DC7jlZdBnl0TCeeflbbIo1HpF-E4o86M/view?usp=sharing
+
 ## Developers✨
 <table>
   <tbody><tr>
